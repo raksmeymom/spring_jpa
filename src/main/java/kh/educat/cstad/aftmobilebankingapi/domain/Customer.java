@@ -21,7 +21,7 @@ public class Customer {
     private Integer id;
 
     @Column(nullable = false, length = 150)
-    private String fullName;
+    private String fullname;
 
     @Column(nullable = false, length = 10)
     private String gender;
