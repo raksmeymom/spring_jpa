@@ -1,10 +1,6 @@
 package kh.educat.cstad.aftmobilebankingapi.dto;
 
-import lombok.Builder;
-
-@Builder
-public record CustomerResponse(
-        Long id,
+public record UpdateCustomerRequest(
         String fullName,
         String email,
         String phoneNumber

@@ -1,6 +1,5 @@
 package kh.educat.cstad.aftmobilebankingapi.exception;
 
-import jakarta.validation.constraints.AssertFalse;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

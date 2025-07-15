@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.util.UUID;
 
 @Getter
@@ -17,15 +18,20 @@ public class KYC {
     private UUID uuid; // Using UUID as primary key
 
     @Column(unique = true, nullable = false, length = 12)
-    private String nationaleCardId;
+    private String nationalCardId; // ✅ fixed typo
 
     @Column(nullable = false)
-    private Boolean isVerified;
+    private Boolean isVerified = false;
 
     @Column(nullable = false)
-    private Boolean isDelete;
+    private Boolean isDelete = false;
 
-    @OneToOne
-    @JoinColumn(name = "customer_id", nullable = false, unique = true)
+    @OneToOne(optional = false)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
+
+    // ✅ Proper setter
+    public void setVerified(boolean verified) {
+        this.isVerified = verified;
+    }
 }

@@ -1,32 +1,63 @@
 package kh.educat.cstad.aftmobilebankingapi.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "accounts")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@AllArgsConstructor
+@Builder
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private String action;
-
+    private String actNo;
     private BigDecimal balance;
-
     private BigDecimal overLimit;
 
-    private Boolean isDelete;
+    @Column(nullable = false)
+    private Boolean isDeleted;
 
-    // Account has a Customer (Many Accounts can belong to one Customer)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false) // Ensures DB has foreign key
+
+
+    @ManyToOne
+    @JoinColumn(name= "cust_id", referencedColumnName = "id")
     private Customer customer;
+
+    @ManyToOne(optional = false)
+    private AccountType accountType;
+
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Integer id;
+//
+//    @Column(nullable = false, unique = true)
+//    private String actNo;
+//
+//    @Column(nullable = false)
+//    private String accountName;
+//
+//    @Column(nullable = false)
+//    private BigDecimal balance;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "cust_id", nullable = false)
+//    private Customer customer;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "acc_type_id", nullable = false)
+//    private AccountType accountType;
+//
+//    @Column(name = "is_deleted")
+//    private Boolean isDeleted = false;
+//
+//    public void setDeleted(boolean deleted) {
+//        this.isDeleted = deleted;
+//    }
 }
