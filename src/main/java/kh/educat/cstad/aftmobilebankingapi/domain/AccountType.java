@@ -8,27 +8,26 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter
-    @Setter
-    @NoArgsConstructor
-    @Entity
-    @Table(name = "account_types")
-    public class AccountType {
+@Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "account_types")
+public class AccountType {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-        @Column(length = 100, nullable = false, unique = true)
-        private String type;
+    // Changed 'type' to 'name' for clarity
+    @Column(length = 100, nullable = false, unique = true)
+    private String name;
 
-        @Column(nullable = false)
-        private Boolean isDeleted  ;
-
-        @OneToMany(mappedBy = "accountType")
-        @Column(nullable = false)
-        private List<Account> accounts;
+    @Column(nullable = false)
+    private Boolean isDeleted;
 
 
+    @OneToMany(mappedBy = "accountType")
+    private List<Account> accounts;
 
-    }
 
+}

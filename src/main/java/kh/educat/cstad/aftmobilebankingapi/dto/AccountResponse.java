@@ -1,14 +1,18 @@
+// AccountResponse.java
 package kh.educat.cstad.aftmobilebankingapi.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 public class AccountResponse {
     private Integer id;
     private String accountNumber;
     private BigDecimal balance;
     private BigDecimal overLimit;
     private Integer customerId;
+    private String accountTypeName;
 }
