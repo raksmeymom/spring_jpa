@@ -30,4 +30,7 @@ public class AccountType {
     private List<Account> accounts;
 
 
+    public void setType(String payroll) {
+
+    }
 }
