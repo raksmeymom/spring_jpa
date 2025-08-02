@@ -8,20 +8,18 @@ import kh.educat.cstad.aftmobilebankingapi.service.MediaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-
+import java.nio.file.*;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -75,5 +73,47 @@ public class MediaServiceImpl implements MediaService {
                 .uri(baseUri + String.format("%s.%s", name, extension))
                 .size(file.getSize())
                 .build();
+    }
+
+    @Override
+    public List<MediaResponse> uploadMultiple(MultipartFile[] files) {
+        List<MediaResponse> responses = new ArrayList<>();
+        for (MultipartFile file : files) {
+            responses.add(upload(file));
+        }
+        return responses;
+    }
+
+    @Override
+    public ResponseEntity<Resource> download(String filename) {
+        try {
+            Path filePath = Path.of(serverPath).resolve(filename);
+            if (!Files.exists(filePath)) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "File not found");
+            }
+
+            Resource resource = new UrlResource(filePath.toUri());
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to read file");
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> delete(String filename) {
+        try {
+            Path filePath = Path.of(serverPath).resolve(filename);
+            if (!Files.exists(filePath)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found");
+            }
+
+            Files.delete(filePath);
+            return ResponseEntity.ok("File deleted: " + filename);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to delete file");
+        }
     }
 }
