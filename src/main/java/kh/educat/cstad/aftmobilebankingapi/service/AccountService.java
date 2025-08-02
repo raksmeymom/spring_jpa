@@ -27,7 +27,8 @@ public class AccountService {
 
     @Transactional
     public AccountResponse create(CreateAccountRequest request) {
-        Customer customer = customerRepository.findById(request.getCustomerId())
+        Customer customer = customerRepository
+                .findById(request.getCustomerId())
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         AccountType accountType = accountTypeRepository.findById(request.getAccountTypeId())

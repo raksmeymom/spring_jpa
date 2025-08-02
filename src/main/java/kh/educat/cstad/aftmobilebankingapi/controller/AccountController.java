@@ -20,17 +20,20 @@ public class AccountController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountResponse create(@RequestBody CreateAccountRequest request) {
+    public AccountResponse create(
+            @RequestBody CreateAccountRequest request) {
         return accountService.create(request);
     }
 
     @GetMapping
     public List<AccountResponse> findAll() {
+
         return accountService.findAll();
     }
 
     @GetMapping("/{accountNumber}")
-    public AccountResponse findByAccountNumber(@PathVariable String accountNumber) {
+    public AccountResponse findByAccountNumber(
+             @PathVariable String accountNumber) {
         return accountService.findByAccountNumber(accountNumber);
     }
 
